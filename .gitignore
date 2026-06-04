@@ -10,6 +10,7 @@ venv/
 *.model.*
 region_metrics.json
 map.html
+poster.html
 
 # 분석 산출 그림 (spatial_autocorr.py 가 재생성)
 figures/
