@@ -11,6 +11,9 @@ venv/
 region_metrics.json
 map.html
 
+# 분석 산출 그림 (spatial_autocorr.py 가 재생성)
+figures/
+
 # 입력 geojson은 커밋함 (skorea_provinces.json 은 .gitignore 하지 않음)
 
 # OS/에디터
