@@ -17,7 +17,12 @@ from menu_attributes import FEATURE_COLUMNS
 
 K_RANGE = range(3, 11)
 PCA_VAR = 0.90
-EMB_WEIGHT = 1.0       # 임베딩 블록 상대 가중 (0이면 속성만 사용)
+# 임베딩 블록 상대 가중 (0이면 속성만 사용).
+# 임베딩(128차원)을 1.0으로 두면 속성(43차원)을 압도해 거대 군집 1개 + 이상치로
+# 붕괴하고 지역 변별력(Cramér's V)이 떨어진다. 스윕 결과 0.25 부근이 군집 균형과
+# 지역 변별력을 유지하면서 임베딩의 잠재 정보를 소량 반영하는 지점이었다.
+# (임베딩의 의미 정보는 region_metrics.py의 키워드 유사도 지표에서 더 직접적으로 쓰인다.)
+EMB_WEIGHT = 0.25
 
 
 def cramers_v(confusion):
