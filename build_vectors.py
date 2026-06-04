@@ -9,22 +9,38 @@ meals_lunch.parquet + schools.parquet -> 학교별 중식 속성 벡터(43차원
 3. 표본수 필터 + 전국평균 수축
 4. CLR 변환(조성 거리 왜곡 방지) -> _clr 저장
 """
+import os
+from concurrent.futures import ProcessPoolExecutor
+
 import numpy as np
 import pandas as pd
 from menu_attributes import parse_menu_string, meal_feature_vector, FEATURE_COLUMNS
 
 MIN_MEALS = 100
 SHRINK_K = 50
+# 끼→속성벡터 변환은 CPU 바운드 순수 파이썬 -> 프로세스 풀로 병렬화.
+# 0/미설정이면 os.cpu_count(). 환경변수 VEC_WORKERS로 조절.
+VEC_WORKERS = int(os.environ.get("VEC_WORKERS", "0")) or None
 
 
-def build_meal_vectors(meals_df: pd.DataFrame) -> pd.DataFrame:
+def _meal_vec(ddish_nm: str):
+    """한 끼 문자열 -> 속성 비율 벡터(dict) 또는 None. 워커가 pickle하므로 모듈 최상위."""
+    dishes = parse_menu_string(ddish_nm)
+    return meal_feature_vector(dishes, normalize=True) if dishes else None
+
+
+def build_meal_vectors(meals_df: pd.DataFrame, workers=VEC_WORKERS) -> pd.DataFrame:
+    names = meals_df["ddish_nm"].tolist()
+    codes = meals_df["school_code"].tolist()
+    # executor.map은 입력 순서를 보존 -> 직렬 버전과 행 순서·값이 동일(결정적).
+    # chunksize로 470k개 태스크의 IPC 오버헤드를 분산.
+    with ProcessPoolExecutor(max_workers=workers) as ex:
+        vecs = ex.map(_meal_vec, names, chunksize=4000)
     recs = []
-    for _, row in meals_df.iterrows():
-        dishes = parse_menu_string(row["ddish_nm"])
-        if not dishes:
+    for code, v in zip(codes, vecs):
+        if v is None:
             continue
-        v = meal_feature_vector(dishes, normalize=True)
-        v["school_code"] = row["school_code"]
+        v["school_code"] = code
         recs.append(v)
     return pd.DataFrame(recs)
 
