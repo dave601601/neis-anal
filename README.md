@@ -20,7 +20,8 @@
 ## 실행 순서
 
 ```bash
-export NEIS_KEY="발급키"          # https://open.neis.go.kr (수집 단계만 외부망 필요)
+# repo 루트 .env 에 NEIS_API_KEY=발급키 (https://open.neis.go.kr, 수집 단계만 외부망 필요)
+# 실행 시 collect_neis.py 가 .env 를 자동 로딩한다.
 python collect_neis.py            # 1) 수집
 python build_vectors.py           # 2) 속성 블록(43)
 python embeddings.py              # 3) 임베딩 블록(64) + 모델 저장
