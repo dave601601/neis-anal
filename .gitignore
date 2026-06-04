@@ -1,0 +1,20 @@
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 수집/생성 데이터 (재생성 가능, 용량 큼)
+*.parquet
+*.model
+*.model.*
+region_metrics.json
+map.html
+
+# 입력 geojson은 커밋함 (skorea_provinces.json 은 .gitignore 하지 않음)
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
