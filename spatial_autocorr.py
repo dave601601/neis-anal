@@ -24,6 +24,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
+import matplotlib.patheffects as pe
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from libpysal.weights import Queen, KNN, W, lag_spatial
@@ -32,6 +33,7 @@ from esda.moran import Moran, Moran_Local
 SEED = 0
 PERM = 999
 FIG_DIR = "figures"
+HERO_METRIC = "con_spicy_mild"  # 포스터 헤드라인: 매운↔순한(전체 데이터서 유의, LISA 풍부: 영남 핫·수도권 콜드)
 
 # geojson 전체명 -> 지표 JSON의 짧은 시도명
 NAME_MAP = {
@@ -48,7 +50,7 @@ METRICS = {
     "seafood_share": "해산물 사용도", "protein_index": "단백질 사용도",
     "con_sea_meat": "해산물↔육류", "con_noodle_rice": "면↔밥",
     "con_spicy_mild": "매운↔순한", "con_west_korean": "양식↔한식",
-    "PC1": "주축1(전통↔표준화)", "PC2": "주축2(해안성)",
+    "PC1": "주축1(전통↔표준화)", "PC2": "해안성 (바다 식문화)",
 }
 # LISA 4분류 색 (paper 팔레트)
 Q_COLOR = {0: "#e8e2d5", 1: "#c0392b", 2: "#a9cce3", 3: "#2c6f9b", 4: "#f1948a"}
@@ -131,29 +133,29 @@ def _draw_map(ax, gdf, cat, title):
     gdf.plot(ax=ax, color=colors, edgecolor="#6f6657", linewidth=0.6)
     for _, r in gdf.iterrows():
         c = r.geometry.representative_point()
-        ax.annotate(r["sido"], (c.x, c.y), ha="center", va="center", fontsize=7,
+        ax.annotate(r["sido"], (c.x, c.y), ha="center", va="center", fontsize=8,
                     color="#211d17",
-                    path_effects=[])
+                    path_effects=[pe.withStroke(linewidth=2.6, foreground="#f6f1e7")])
     ax.set_title(title, fontsize=12, color="#211d17")
     ax.axis("off")
 
 
 def fig_lisa_map(gdf, cat, metric, fname):
-    fig, ax = plt.subplots(figsize=(6, 7))
+    fig, ax = plt.subplots(figsize=(7, 8.2))
     fig.patch.set_facecolor("#f6f1e7"); ax.set_facecolor("#f6f1e7")
     _draw_map(ax, gdf, cat, f"LISA: {METRICS[metric]}")
     handles = [plt.Rectangle((0, 0), 1, 1, fc=Q_COLOR[k], ec="#6f6657")
                for k in [1, 3, 4, 2, 0]]
     ax.legend(handles, [Q_LABEL[k] for k in [1, 3, 4, 2, 0]],
               loc="lower left", fontsize=8, frameon=False)
-    fig.tight_layout(); fig.savefig(fname, dpi=150, facecolor="#f6f1e7"); plt.close(fig)
+    fig.tight_layout(); fig.savefig(fname, dpi=200, facecolor="#f6f1e7"); plt.close(fig)
 
 
 def fig_moran_scatter(gdf, w, metric, mi_I, fname):
     y = gdf[metric].values.astype(float)
     z = (y - y.mean()) / y.std()
     wz = lag_spatial(w, z)
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=(7, 7))
     fig.patch.set_facecolor("#f6f1e7"); ax.set_facecolor("#fffdf8")
     ax.axhline(0, color="#b0a890", lw=.8); ax.axvline(0, color="#b0a890", lw=.8)
     ax.scatter(z, wz, s=60, color="#b6452c", edgecolor="#211d17", zorder=3)
@@ -165,7 +167,7 @@ def fig_moran_scatter(gdf, w, metric, mi_I, fname):
     ax.set_xlabel("우리 지역 값 (z)"); ax.set_ylabel("이웃 평균 값 (Wz)")
     ax.set_title(f"Moran 산점도: {METRICS[metric]}", fontsize=12)
     ax.legend(loc="upper left", fontsize=9, frameon=False)
-    fig.tight_layout(); fig.savefig(fname, dpi=150, facecolor="#f6f1e7"); plt.close(fig)
+    fig.tight_layout(); fig.savefig(fname, dpi=200, facecolor="#f6f1e7"); plt.close(fig)
 
 
 def fig_lisa_panel(gdf, w, metrics4, fname):
@@ -175,7 +177,7 @@ def fig_lisa_panel(gdf, w, metrics4, fname):
         ax.set_facecolor("#f6f1e7")
         _, cat = lisa(gdf, w, m)
         _draw_map(ax, gdf, cat, METRICS[m])
-    fig.tight_layout(); fig.savefig(fname, dpi=150, facecolor="#f6f1e7"); plt.close(fig)
+    fig.tight_layout(); fig.savefig(fname, dpi=200, facecolor="#f6f1e7"); plt.close(fig)
 
 
 def main():
@@ -189,11 +191,9 @@ def main():
     table = global_moran(gdf, w)
     print(table.to_string(index=False))
 
-    # 헤드라인 축 = 유의하면서 |I| 최대
-    sigtab = table.copy()
-    sigtab["abs"] = sigtab["MoranI"].abs()
-    head_label = sigtab.sort_values("abs", ascending=False).iloc[0]["지표"]
-    head = {v: k for k, v in METRICS.items()}[head_label]
+    # 헤드라인 축: 해석 쉬운 HERO_METRIC 고정 (PC2와 거의 동일)
+    head = HERO_METRIC
+    head_label = METRICS[head]
     head_I = float(table[table["지표"] == head_label]["MoranI"].iloc[0])
     print(f"\n헤드라인 축: {head_label} (Moran's I={head_I:.3f})")
 
@@ -205,9 +205,14 @@ def main():
 
     fig_lisa_map(gdf, cat, head, f"{FIG_DIR}/lisa_{head}.png")
     fig_moran_scatter(gdf, w, head, head_I, f"{FIG_DIR}/moran_scatter_{head}.png")
-    fig_lisa_panel(gdf, w, ["seafood_share", "con_spicy_mild", "con_west_korean", "PC1"],
+    # 두 번째 헤드라인 지도: 양식↔한식 (수도권 핫스팟, 해석 쉬움)
+    _, cw_cat = lisa(gdf, w, "con_west_korean")
+    fig_lisa_map(gdf, cw_cat, "con_west_korean", f"{FIG_DIR}/lisa_con_west_korean.png")
+    # 대조 패널: 공간 군집(해안성·양식) vs 공간 무작위(매운·단백질)
+    fig_lisa_panel(gdf, w, ["con_spicy_mild", "con_west_korean", "protein_index", "bread"],
                    f"{FIG_DIR}/lisa_panel.png")
-    print(f"\n그림 저장: {FIG_DIR}/lisa_{head}.png, moran_scatter_{head}.png, lisa_panel.png")
+    print(f"\n그림 저장: lisa_{head}.png, moran_scatter_{head}.png, "
+          f"lisa_con_west_korean.png, lisa_panel.png")
 
 
 if __name__ == "__main__":
