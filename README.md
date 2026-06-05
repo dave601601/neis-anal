@@ -13,22 +13,38 @@
    (경북·대구) 핫스팟·수도권 콜드, 양식화는 수도권 핫스팟·호남 콜드 — "수도권 ↔ 지방" 축.
    (`spatial_sigungu.py`, `spatial_autocorr.py`)
 
+   <img src="assets/01-spatial-spicy.png" width="430" alt="시군구 매운맛 LISA — 영남 핫스팟·수도권 콜드">
+
+
 2. **급식은 전통 절기 캘린더를 따른다.** 설 떡국(1월 약 4배 급증)·정월대보름 오곡/부럼·
    삼복 삼계탕(7월)·추석 송편(9월)·동지 팥죽(12월에만). 데이터 주도로 가장 계절 타는
    메뉴는 제철 과일(자두·수박 7월, 단감 11월, 딸기 2월). (`temporal_analysis.py`)
+
+   <img src="assets/02-calendar.png" width="560" alt="월×메뉴 계절 캘린더 히트맵">
+
 
 3. **사회 음식 트렌드가 급식에 그대로 찍힌다.** 마라 2021→25 ×6.9(Mann-Kendall=10 완전
    단조, CAGR 62%), 두바이초콜릿 ×21.5(2024 바이럴), 마라탕 ×6.1. 동시에 흰쌀밥·우유·
    요구르트 하락, 잡곡·귀리밥 상승(정백→통곡). (`temporal_analysis.py`)
 
-4. **전통 손맛(발효·찌개·김치·나물)이 전국적으로 후퇴하고 있다.** 시도 간 분산이 발효
-   −72%·찌개 −64%로 유의하게 축소(부트스트랩·Mann-Kendall, Bonferroni 통과). 단 이는
-   '지역 수렴'이 아니라 16개 시도가 동반 하락하는 **시간적 후퇴**(β-수렴 ns) — 급식의
-   세대적 현대화. (`hypothesis_homog_robust.py`, `hypothesis_who_converges.py`)
+   <img src="assets/03-trend.png" width="440" alt="급식 트렌드 slopegraph — 마라·두바이초콜릿 부상">
+
+
+4. **전통 손맛의 지역차가 좁혀진다 — 동질화(homogenization).** 시도 간 분산이 발효
+   −72%·찌개 −64%로 유의하게 축소(부트스트랩·Mann-Kendall, Bonferroni 통과) = **동질화**.
+   단 그 정체는 특정 지역으로의 수렴이 아니라 16개 시도가 전통식(발효·찌개·김치·나물)을
+   **동반 축소**하는 전국적 후퇴(β-수렴 ns)다 — 급식의 세대적 현대화.
+   (`hypothesis_homog_robust.py`, `hypothesis_who_converges.py`)
+
+   <img src="assets/04-tradition-decline.png" width="560" alt="전통 손맛 지수 — 16개 시도 동반 하락(동질화)">
+
 
 5. **급식은 '그날의 날씨'에 반응하지 않는다.** 계절을 제거하면 일별 기온 이상치와
    국물요리·냉면 비중의 상관이 r≈0(비유의). 겉보기 강한 상관(기온×냉면 raw r=0.585)은
    전부 계절 교란이었다 — 식단은 미리 짠 캘린더에 고정. (`hypothesis_weather.py`, 기온=Open-Meteo)
+
+   <img src="assets/05-weather-null.png" width="640" alt="계절 제거 후 기온 이상치 vs 메뉴 — 무상관(귀무)">
+
 
 > 방법 메모: 샘플(502교)에선 '해안성'이 1위(I=0.42)로 보였으나 전체(2,355교)에선 붕괴
 > (0.25/ns). robust 검정(부트스트랩·MK·Bonferroni)으로 false signal(예: 중식 지역 발산)을
