@@ -59,7 +59,7 @@
    유행은 급식에 거의 없다(밥·반찬으로 번역 가능한 유행만 반영). 학생 유행식 vs 어른 건강식
    (비건·채식·콩) 경쟁은 유행식이 **2.9배** 우세하나 압도는 아니며 둘 다 2023 이후 정체. 키워드는
    FastText 임베딩으로 추출하되 **5라운드 적대검증**으로 정착메뉴(로제)·오탐(대체)을 제거했다.
-   (`trend_reflection.py`)
+   (`trend_reflection.py`) — **상세 보고서**: [`TREND_REFLECTION.md`](TREND_REFLECTION.md)
 
    <img src="assets/07-fad-lines.png" width="460" alt="유행식 개별 — 마라만 급증, 간식형 미미"> <img src="assets/07-compete.png" width="440" alt="유행식 vs 건강식 경쟁 — 유행 2.9배 우세, 둘 다 정체">
 
