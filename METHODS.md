@@ -49,6 +49,15 @@
 점유율 I=0.54 최강. 매운맛은 영남(경북·대구) 핫스팟·수도권 콜드, 양식화는 수도권 핫스팟·호남 콜드
 → "수도권 ↔ 지방" 축. 내륙인 안동·영양이 해산물 핫스팟(간고등어 향토색).
 
+**과정 그림.** Moran 산점도(시군구 237, 밥 점유율 I=0.54 — 점이 우상향이면 "값 높은 시군구는 이웃도 높다"):
+
+<img src="assets/s1-moran-scatter.png" width="440" alt="시군구 Moran 산점도">
+
+LISA 지도 (빨강 HH=핫스팟, 파랑 LL=콜드스팟, 분홍/연파랑=공간 이상치):
+
+<img src="assets/s1-lisa-rice.png" width="300" alt="밥 LISA"> <img src="assets/s1-lisa-spicy.png" width="300" alt="매운맛 LISA — 영남 핫·수도권 콜드">
+<img src="assets/s1-lisa-west.png" width="300" alt="양식 LISA — 수도권 핫·호남 콜드"> <img src="assets/s1-lisa-seafood.png" width="300" alt="해산물 LISA — 호남·안동">
+
 ### 한계
 공간 단위가 행정구역이라 임의적(MAUP). n=17 시도는 검정력이 약해 시군구로 보강. geojson 행정구역이
 2013 기준이라 보정 필요.
@@ -87,6 +96,20 @@
 8. **재정의**: robust 동질화의 정체는 *공간 수렴*이 아니라 **전통식(발효·찌개·김치·나물)의 전국적
    후퇴**(시간 추세) — 급식의 세대적 현대화. (B-트렌드의 쌀밥·우유↓, 마라·잡곡↑과 한 그림)
 
+**과정 그림** (정직화의 연쇄).
+
+월 60점 탈계절 분산 추세 — 순 동질화는 평탄·비유의(step 3):
+
+<img src="assets/s2-monthly.png" width="600" alt="월별 지역 분산 추세">
+
+겉보기 분해(끝점비, 이중 과정처럼) → robust forest(★만 유의, 발산 후보는 노이즈로 탈락) (step 5→6):
+
+<img src="assets/s2-attrs.png" width="370" alt="겉보기 속성 분해"> <img src="assets/s2-forest.png" width="370" alt="robust forest plot">
+
+지역 MDS 궤적(전북 제외) · '누가 누구로' — 16개 시도 동반 하락 + β-수렴 비유의(step 7):
+
+<img src="assets/s2-mds.png" width="300" alt="MDS 궤적"> <img src="assets/s2-traj.png" width="360" alt="전통 손맛 동반 하락"> <img src="assets/s2-beta.png" width="290" alt="β-수렴 ns">
+
 ### 교훈
 보이는 신호(이중 과정·중식 발산)를 robust 검정으로 두 번 정정. **"보이는 게 다가 아니다"**를 부트스트랩·
 MK·Bonferroni·데이터 품질 점검으로 데이터로 보였다.
@@ -119,6 +142,10 @@ MK·Bonferroni·데이터 품질 점검으로 데이터로 보였다.
 계절 제거 **전** raw 상관: 기온 × 냉면 r = **+0.585**(강함!). 계절 제거 **후**: r ≈ **0.02**(무의미).
 → 겉보기 0.585는 전부 계절 교란. 캘린더를 빼면 그날 날씨 효과는 0. **급식은 날씨가 아니라 캘린더에
 고정**돼 있다(귀무 채택). 상관≠인과, 교란 통제의 교과서 사례.
+
+**과정 그림.** 계절 제거 후 기온 이상치 vs 메뉴 이상치 — 기울기 ≈ 0(무반응). (raw 기온×냉면은 +0.585였으나 전부 계절 교란):
+
+<img src="assets/s3-weather.png" width="680" alt="날씨 무반응 산점도">
 
 ### 한계
 전국 평균 기온·메뉴라 지역별 반응은 못 봄. 방학(끼 적은 날) 제외로 극단 기온일이 일부 빠짐.
