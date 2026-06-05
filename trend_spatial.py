@@ -19,14 +19,16 @@ import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
 from libpysal.weights import lag_spatial
 from esda.moran import Moran, Moran_Local
 from esda.getisord import G_Local
 
 from spatial_sigungu import (load_municipalities, school_sigungu, build_weights,
-                             _font, Q_COLOR, Q_LABEL, FIG_DIR)
+                             aggregate, _font, Q_COLOR, Q_LABEL, FIG_DIR)
 
 TREND = ["마라", "두바이", "탕후루", "약과", "그릭", "바질", "비건"]
+NONMARA = [k for k in TREND if k != "마라"]
 EXCLUDE = {"전북"}                  # 중식 2024부터라 2025 비교서 제외
 YEAR = 2025
 SEED, PERM = 0, 999
@@ -35,19 +37,24 @@ PAPER, INK = "#f6f1e7", "#211d17"
 
 
 def sigungu_trend_rate(gkeys):
-    """시군구별 2025 트렌드 바스켓 등장률(천 끼당) + 학교수."""
+    """시군구별 2025 등장률(천 끼당) — 바스켓/마라/비마라 동일 단위 + 학교수."""
     sg = school_sigungu(gkeys)                                  # school_code, sido, jname
     m = pd.read_parquet("meals_lunch.parquet", columns=["school_code", "date", "ddish_nm"])
     m["y"] = pd.to_datetime(m["date"], format="%Y%m%d").dt.year
     m = m[m["y"] == YEAR].merge(sg, on="school_code")
     m = m[~m["sido"].isin(EXCLUDE)]
-    pat = "|".join(TREND)
-    m["hit"] = m["ddish_nm"].str.contains(pat, na=False, regex=True)
     grp = m.groupby(["sido", "jname"])
+    den = grp.size()
+    d = m["ddish_nm"]
+
+    def rate(kws):
+        h = m[d.str.contains("|".join(kws), na=False, regex=True)].groupby(["sido", "jname"]).size()
+        return (h / den * 1000)
+
     out = pd.DataFrame({
-        "trend": grp["hit"].sum() / grp.size() * 1000,
+        "trend": rate(TREND), "mara": rate(["마라"]), "nonmara": rate(NONMARA),
         "n_sch": grp["school_code"].nunique(),
-    }).reset_index()
+    }).fillna(0.0).reset_index()
     return out[out["n_sch"] >= MIN_SCH_T].reset_index(drop=True)
 
 
@@ -64,51 +71,53 @@ def fig_cluster(gall, prov, g, cat, title, fname, labels=Q_LABEL, colors=Q_COLOR
     fig.tight_layout(); fig.savefig(fname, dpi=200, facecolor=PAPER); plt.close(fig)
 
 
+def lisa_cat(y, w):
+    loc = Moran_Local(np.asarray(y, float), w, permutations=PERM, seed=SEED)
+    return np.where(loc.p_sim <= 0.05, loc.q, 0)
+
+
 def main():
     _font(); os.makedirs(FIG_DIR, exist_ok=True)
     gall, gkeys, prov = load_municipalities()
-    rate = sigungu_trend_rate(gkeys)
-    g = gall.merge(rate, on=["sido", "jname"], how="inner")
+    df = sigungu_trend_rate(gkeys)
+    g = gall.merge(df, on=["sido", "jname"], how="inner")
     print(f"분석 단위: 시군구 {len(g)}개 (>= {MIN_SCH_T}교, 2025, 전북 제외)")
-    print(f"트렌드 등장률 범위: {g['trend'].min():.1f} ~ {g['trend'].max():.1f} (천 끼당)")
-
     w = build_weights(g)
-    y = g["trend"].values.astype(float)
 
-    # 1) Global Moran's I — 공간적으로 군집하는가?
-    np.random.seed(SEED)
-    mi = Moran(y, w, permutations=PERM)
-    print(f"\n=== Global Moran's I (트렌드 수용, 시군구 {len(g)}) ===")
-    print(f"  I = {mi.I:+.3f},  p(순열 {PERM}) = {mi.p_sim:.3f},  z = {mi.z_sim:+.2f}")
-    print(f"  -> {'공간 군집(유의)' if mi.p_sim <= 0.05 else '무작위'}  (양수 I = 끼리끼리 뭉침)")
+    # 1) 공간 자기상관 '분해' — 바스켓의 군집은 누가 만드나?
+    print("\n=== Global Moran's I 분해 (트렌드 수용) ===")
+    for col, lab in [("mara", "마라 단독"), ("trend", "바스켓 7종"), ("nonmara", "비마라 6종")]:
+        np.random.seed(SEED)
+        mi = Moran(g[col].values.astype(float), w, permutations=PERM)
+        tag = "공간 군집(유의)" if mi.p_sim <= 0.05 else "무작위(비유의)"
+        print(f"  {lab:9s} I={mi.I:+.3f}  p={mi.p_sim:.3f}  -> {tag}")
+    share = g["mara"].sum() / g["trend"].sum() * 100
+    print(f"  (바스켓 등장 중 '마라' 비중 ~ {share:.0f}%)")
 
-    # 2) LISA — 핫스팟(HH)/콜드스팟(LL)
-    loc = Moran_Local(y, w, permutations=PERM, seed=SEED)
-    cat = np.where(loc.p_sim <= 0.05, loc.q, 0)
+    # 2) 마라 단독 LISA — 바스켓 군집의 사실상 전부, 주력 지도
+    np.random.seed(SEED); mi_m = Moran(g["mara"].values.astype(float), w, permutations=PERM)
+    cat = lisa_cat(g["mara"].values, w)
     hh = [(g.iloc[i]["sido"], g.iloc[i]["jname"]) for i in range(len(g)) if cat[i] == 1]
     ll = [(g.iloc[i]["sido"], g.iloc[i]["jname"]) for i in range(len(g)) if cat[i] == 3]
-    print(f"\n=== LISA: 핫스팟 HH {len(hh)}곳 · 콜드스팟 LL {len(ll)}곳 ===")
-    print("  HH(다같이 높음):", ", ".join(f"{s}{n}" for s, n in hh[:18]))
-    print("  LL(다같이 낮음):", ", ".join(f"{s}{n}" for s, n in ll[:18]))
-    hh_sido = pd.Series([s for s, _ in hh]).value_counts()
-    ll_sido = pd.Series([s for s, _ in ll]).value_counts()
-    print("  HH 시도 분포:", dict(hh_sido)); print("  LL 시도 분포:", dict(ll_sido))
-    fig_cluster(gall, prov, g, cat, f"시군구 트렌드 수용 LISA  (Moran's I={mi.I:.2f}, p={mi.p_sim:.3f})",
-                f"{FIG_DIR}/trend_lisa.png")
+    print(f"\n=== '마라' LISA (I={mi_m.I:.3f}, p={mi_m.p_sim:.3f}): HH {len(hh)} · LL {len(ll)} ===")
+    print("  HH(핫스팟):", ", ".join(f"{s}{n}" for s, n in hh[:18]))
+    print("  LL(콜드스팟):", ", ".join(f"{s}{n}" for s, n in ll[:18]))
+    fig_cluster(gall, prov, g, cat,
+                f"시군구 '마라' 수용 LISA  (Moran's I={mi_m.I:.2f}, p={mi_m.p_sim:.3f})",
+                f"{FIG_DIR}/trend_mara_lisa.png")
 
-    # 3) Getis-Ord Gi* — 핫/콜드 z-검정
-    np.random.seed(SEED)
-    gi = G_Local(y, w, star=True, permutations=PERM, seed=SEED)
-    z = gi.Zs
-    gcat = np.where((gi.p_sim <= 0.05) & (z > 0), 1,
-                    np.where((gi.p_sim <= 0.05) & (z < 0), 3, 0))
-    gi_lab = {0: "유의하지 않음", 1: "Gi* 핫스팟", 3: "Gi* 콜드스팟"}
-    gi_col = {0: "#e8e2d5", 1: "#c0392b", 3: "#2c6f9b"}
-    print(f"\n=== Getis-Ord Gi* (z>0 핫, z<0 콜드, p<=.05) ===")
-    print(f"  핫스팟 {int((gcat==1).sum())}곳 · 콜드스팟 {int((gcat==3).sum())}곳")
-    fig_cluster(gall, prov, g, gcat, f"시군구 트렌드 수용 Gi* 핫스팟",
-                f"{FIG_DIR}/trend_gistar.png", labels=gi_lab, colors=gi_col)
-    print("\n그림: figures/trend_lisa.png, figures/trend_gistar.png")
+    # 3) 마라의 공간 vs '매운맛 식문화'의 공간 — 같은가?(순환성 점검)
+    agg, _, _ = aggregate(gkeys)                       # con_spicy_mild(매운↔순한) 시군구 z
+    cmp = g.merge(agg[["sido", "jname", "con_spicy_mild"]], on=["sido", "jname"])
+    wc = build_weights(cmp)
+    r, p = pearsonr(cmp["mara"].values, cmp["con_spicy_mild"].values)
+    m_cat = lisa_cat(cmp["mara"].values, wc)
+    s_cat = lisa_cat(cmp["con_spicy_mild"].values, wc)
+    both = int(((m_cat == 1) & (s_cat == 1)).sum())
+    print(f"\n=== 마라 공간 vs 매운맛 공간 (공통 {len(cmp)} 시군구) ===")
+    print(f"  상관 r={r:+.2f} (p={p:.3f}) | 마라 HH {(m_cat==1).sum()} · 매운맛 HH {(s_cat==1).sum()} · 둘 다 HH {both}곳")
+    print(f"  -> r이 0~음수면 '마라=도시 외식 트렌드' ≠ '매운맛=식문화'(다른 공간)")
+    print("\n그림: figures/trend_mara_lisa.png")
 
 
 if __name__ == "__main__":
