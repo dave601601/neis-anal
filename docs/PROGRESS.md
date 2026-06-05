@@ -9,6 +9,7 @@
 - [README.md](../README.md) — 주요 발견 **Top 7**(각 대표 그림). 공간구조·절기캘린더·트렌드·동질화·날씨·트렌드 민감도·유행 반영.
 - [METHODS.md](../METHODS.md) — 프로세스 4종(공간자기상관·동질화 robust·날씨통제·트렌드 민감도), 과정 그림.
 - [TREND_REFLECTION.md](../TREND_REFLECTION.md) — '유행이 급식에 반영되는가' 상세 보고서(그림 6장 + 5라운드 검증).
+- [DYNAMICS.md](../DYNAMICS.md) — **왜 그런가(역학)**. 패턴①②③의 원인을 급식 제도·정책·세대로 추적(외부 다중출처·근거강도 표기).
 - [PRESENTATION_RANKING.md](PRESENTATION_RANKING.md) — 발견 발표 적합성 순위.
 
 ## 주제 로그
@@ -17,13 +18,13 @@
 - [poster](progress/poster.md) — A1 HTML 포스터
 - [temporal-analysis](progress/temporal-analysis.md) — 계절·트렌드·트렌드민감도·유행반영
 - [hypothesis-tests](progress/hypothesis-tests.md) — 동질화·날씨·확산·회피규칙 (검증 완료)
+- [why-dynamics](progress/why-dynamics.md) — '왜 그런가' 외부 리서치(제도·정책·세대), DYNAMICS.md
 
 ## Open (현재 미결 / 다음 할 일)
-- [ ] **다음 작업: "Why / main dynamics" 리서치** — 발견의 *역학(mechanism)* 을 외부자료(deep-research)로 설명.
-  설명 대상: ① 마라처럼 '메뉴화 가능한' 유행만 반영(탕후루·디저트 미반영) ② 수도권/서울이 트렌드 리더가
-  아니고 지방(광주·경북) 민감 ③ 전통 발효·나물·찌개의 전국 후퇴 / 마라=영남 매운맛. 맥락 후보: 학교급식법·
-  영양(교)사 식단 자율성·식재료 공동구매·입찰·지역 농산물(로컬푸드) 정책·세대 입맛·잔반(food waste).
 - [ ] 최종 발표 방향·포스터 확정(공간 vs 시간 vs 결합). `poster.html` 은 시도(17) 데이터 하드코딩 상태.
+- [ ] (선택) DYNAMICS.md 적대검증 루프 — '왜' 주장들의 상관↔인과 과장·반례 누락 재점검(원하면).
+- [x] **"Why / main dynamics" 리서치 완료** → [DYNAMICS.md](../DYNAMICS.md). 3패턴을 제도 필터①·재정
+  인센티브②·세대입맛+잔반③으로 설명(외부 다중출처·근거강도 표기). 통합축="제도가 미리 짠 캘린더".
 - [x] 트렌드/유행/동질화/공간/시간 분석 + **5라운드 적대검증 수렴**(구멍 0) — 상세는 위 산출물·주제 파일.
 
 ## 작성 규칙
