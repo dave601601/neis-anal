@@ -48,7 +48,8 @@
 
 > 방법 메모: 샘플(502교)에선 '해안성'이 1위(I=0.42)로 보였으나 전체(2,355교)에선 붕괴
 > (0.25/ns). robust 검정(부트스트랩·MK·Bonferroni)으로 false signal(예: 중식 지역 발산)을
-> 일관되게 걸러냈다. 진행 상세는 [`docs/PROGRESS.md`](docs/PROGRESS.md).
+> 일관되게 걸러냈다. **방법론 상세(프로세스 3종)**는 [`METHODS.md`](METHODS.md), 진행 로그는
+> [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
 ## 파일
 
