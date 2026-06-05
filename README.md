@@ -52,7 +52,7 @@
    대형 유행(마라)은 전국 균일, 틈새 유행(비건·바질)만 지역적. 단 시도 순위 자체는 마라 단일
    유행에 민감(불안정). (`trend_sensitivity.py`)
 
-   <img src="assets/06-trend-sensitivity.png" width="430" alt="트렌드 수용 지수 지도 — 대구·경북 민감, 서울·경남 둔감">
+   <img src="assets/06-trend-sensitivity.png" width="430" alt="트렌드 수용 지수 지도 — 광주·경북 민감(지방), 서울·경남 둔감">
 
 
 > 방법 메모: 샘플(502교)에선 '해안성'이 1위(I=0.42)로 보였으나 전체(2,355교)에선 붕괴
