@@ -7,10 +7,12 @@
 - [pipeline](progress/pipeline.md) — 수집·속성·임베딩 파이프라인 (dotenv·병렬화·전체수집·메모리캡)
 - [spatial-analysis](progress/spatial-analysis.md) — 공간 자기상관 (Moran's I·LISA), 시도·시군구
 - [poster](progress/poster.md) — A1 HTML 포스터
-- [temporal-analysis](progress/temporal-analysis.md) — 시간 차원(계절·트렌드·요일) ← 다음 작업
+- [temporal-analysis](progress/temporal-analysis.md) — 시간 차원(계절·트렌드·요일)
+- [hypothesis-tests](progress/hypothesis-tests.md) — 가설 검증(동질화·날씨·확산·회피규칙) ← 진행 중
 
 ## Open (현재 미결 / 다음 할 일)
-- [ ] 시간 분석 **A+B 완료** → 포스터로 만들지, 추가 축(요일효과 C·반복주기)을 팔지 미정.
+- [ ] **가설 순차 검증 진행 중**: H-동질화(약함, 기각못함) → H-날씨(다음, Open-Meteo). 강한 신호면 stop·보고.
+- [ ] 시간 분석 A+B 완료 → 포스터로 만들지, 추가 축(요일효과 C·반복주기)을 팔지 미정.
 - [ ] `poster.html` 은 시도(17) 데이터 하드코딩 → 시군구/시간 데이터로 갱신할지 미정.
 - [ ] 최종 발표 방향 확정: 공간(GIS) vs 시간 vs 결합.
 
