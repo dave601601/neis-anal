@@ -15,7 +15,7 @@
 1. **이 문서(RESUME.md)** — 전체 상태 + 다음 작업
 2. [`../README.md`](../README.md) — 주요 발견 **Top 7**(각 대표 그림)
 3. [`../METHODS.md`](../METHODS.md) — 프로세스 4종 상세(수식 + 쉬운 말)
-4. [`../TREND_REFLECTION.md`](../TREND_REFLECTION.md) — '유행 반영' 상세 보고서(그림 6 + 5라운드 검증)
+4. [`../TRENDS.md`](../TRENDS.md) — **트렌드 종합**(질문→방법→발견3→역학→검증), 데이터 재현·부트스트랩·적대감사 통과
 5. [`PROGRESS.md`](PROGRESS.md) + [`progress/*.md`](progress/) — 주제별 시간순 로그
 6. [`PRESENTATION_RANKING.md`](PRESENTATION_RANKING.md) — 발견 발표 적합성 순위
 
@@ -42,7 +42,7 @@
 | 동질화 | robust 신호 = **전통 손맛(발효−72%·찌개−64%·김치·나물) 수렴**, 단 정체는 '지역 수렴'이 아닌 **전국 후퇴**(시간추세). | `hypothesis_homog_robust.py`·`hypothesis_who_converges.py` |
 | 시간 | 절기 캘린더(설 떡국·동지 팥죽·삼복 삼계탕·제철 과일), 트렌드(마라 ×6.9). | `temporal_analysis.py` |
 | 날씨 | 계절 제거 시 무반응(귀무; raw 기온×냉면 0.585 → 탈계절 ≈0). 식단은 미리 짠 캘린더. | `hypothesis_weather.py` |
-| 트렌드 민감 | **광주·경북 민감·서울 둔감**, "도시=리더" 기각(수도권 둔감 부트스트랩 89% 견고). 1위 순위는 마라 의존. | `trend_sensitivity.py` |
+| 트렌드 민감 | **광주·경북 민감·서울 둔감**, "도시=리더" 기각(수도권 둔감 부트스트랩 90% 견고). 1위는 광주 33%(마라 제외 40%). | `trend_sensitivity.py`·`verify_trends.py` |
 | 유행 반영 | 어른은 **'메뉴화 가능한' 유행(마라, 바스켓 79%)만** 반영, 탕후루·두바이 간식형 미반영; 유행:건강 2.9배(둘 다 2023 정체). | `trend_reflection.py` |
 
 방법론 메타: **표본의 함정**(샘플 502교→전체 2,355교서 해안성 0.42→0.04 붕괴) · **robust화**(부트스트랩·MK·Bonferroni로
