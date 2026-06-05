@@ -18,7 +18,7 @@ import matplotlib.font_manager as fm
 from scipy.stats import pearsonr
 
 YEARS = [2021, 2022, 2023, 2024, 2025]
-TREND = ["마라", "마라탕", "두바이", "탕후루", "약과", "그릭", "바질", "비건"]
+TREND = ["마라", "두바이", "탕후루", "약과", "그릭", "바질", "비건"]  # 마라탕 제외(마라 부분집합=이중계수)
 SUDO = {"서울", "경기", "인천"}
 FIG_DIR = "figures"
 PAPER, INK, ACC, COOL = "#f6f1e7", "#211d17", "#b6452c", "#2c6f7a"
