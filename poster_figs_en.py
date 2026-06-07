@@ -13,13 +13,14 @@ import os
 import re
 import numpy as np
 import pandas as pd
+import geopandas as gpd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from gensim.models import FastText
 from esda.moran import Moran
 
-from trend_reflection import build_set, TREND_ROOTS, HEALTH_ROOTS
+from trend_reflection import build_set, TREND_ROOTS, HEALTH_ROOTS, NAME_MAP
 from trend_spatial import load_municipalities, sigungu_trend_rate, build_weights, lisa_cat
 from spatial_sigungu import Q_COLOR
 
@@ -141,6 +142,30 @@ def fig_lisa():
     fig.tight_layout(); _save(fig, "en_mara_lisa.png")
 
 
+# 5) trend-food index vs health-food index — Korea choropleth (by province) ---
+def fig_index_maps(m, fad_kw, heal_kw):
+    m25 = m[m["y"] == 2025]
+    den = m25.groupby("sido").size()
+
+    def zidx(kws):
+        h = m25[m25["ddish_nm"].str.contains("|".join(map(re.escape, kws)), na=False, regex=True)]
+        r = (h.groupby("sido").size() / den * 1000).reindex(den.index).fillna(0.0)
+        return (r - r.mean()) / (r.std(ddof=0) + 1e-9)
+
+    fad_idx, heal_idx = zidx(fad_kw), zidx(heal_kw)
+    g = gpd.read_file("skorea_provinces.json").set_crs(4326, allow_override=True)
+    g["sido"] = g["name"].map(NAME_MAP)
+    g["Trend"] = g["sido"].map(fad_idx); g["Health"] = g["sido"].map(heal_idx)
+    fig, axes = plt.subplots(1, 2, figsize=(8.4, 5.4)); fig.patch.set_facecolor(PAPER)
+    for ax, col, ttl, cm in [(axes[0], "Trend", "Trend-food index", "Oranges"),
+                             (axes[1], "Health", "Health-food index", "Greens")]:
+        g.plot(column=col, ax=ax, cmap=cm, edgecolor="#cdbfa3", linewidth=.4, legend=True,
+               legend_kwds={"shrink": .5}, missing_kwds={"color": "#e8e2d5"})
+        ax.set_title(ttl, fontsize=13, color=INK); ax.axis("off"); ax.set_facecolor(PAPER)
+    fig.suptitle("Where each is high, by province (z-score, 2025)", fontsize=13, color=INK)
+    fig.tight_layout(); _save(fig, "en_index_maps.png")
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     print("loading model + meals ...")
@@ -151,6 +176,7 @@ def main():
     fig_mara_share(m, fad_kw)
     fig_compete(m, fad_kw, heal_kw)
     fig_trend(m)
+    fig_index_maps(m, fad_kw, heal_kw)
     fig_lisa()
     print(f"done -> {OUT}/")
 
