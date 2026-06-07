@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Does school lunch follow student food trends? — A1 poster outline</title>
+<style>
+  /* ---- READABILITY ONLY. No decoration. ---- */
+  /* A1 portrait = 594 x 841 mm. 1mm = 1px here for proportion; scale at print. */
+  :root{
+    --ink:#1a1a1a;
+    --muted:#555;
+    --line:#bbb;
+    --box:#f2f2f2;
+    --accent:#c0392b;   /* trend / mala */
+    --accent2:#2e7d4f;  /* health */
+    --pagew:594px;
+    --pageh:841px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#888; color:var(--ink);
+    font-family: Arial, "Helvetica Neue", sans-serif;
+    line-height:1.25;
+  }
+  .page{
+    width:var(--pagew); min-height:var(--pageh);
+    margin:20px auto; background:#fff; padding:14px 16px;
+    /* portrait A1: everything below sized relative to this column */
+  }
+
+  /* ---------- TYPE SCALE (1.5 m readability) ---------- */
+  h1{font-size:30px; line-height:1.05; margin:0 0 4px;}
+  .hook{font-size:16px; color:var(--muted); margin:0 0 6px; font-weight:bold;}
+  .thesis{font-size:18px; line-height:1.25; margin:6px 0 12px;
+          border:2px solid var(--ink); padding:10px 12px; background:var(--box);}
+  .thesis b{font-size:19px;}
+  h2{font-size:18px; margin:0 0 6px; border-bottom:2px solid var(--ink); padding-bottom:3px;}
+  h3{font-size:15px; margin:0 0 3px;}
+  p,li{font-size:11.5px;}
+  .big-num{font-size:34px; font-weight:bold; line-height:1; display:block;}
+  .big-num small{font-size:12px; font-weight:normal; color:var(--muted); display:block; margin-top:2px;}
+  .kicker{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:bold;}
+  .verdict{font-size:12px; font-weight:bold; color:var(--accent); margin-top:4px;}
+  .small{font-size:9.5px; color:var(--muted); line-height:1.2;}
+
+  /* ---------- LAYOUT ---------- */
+  section{margin:0 0 12px;}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .col{border:1px solid var(--line); padding:8px; background:#fff;}
+  .findings .col{border-top:5px solid var(--accent);}
+  .findings .col.gis{border-top:5px solid #2c3e9e;}
+
+  /* big-numbers strip in Data&Method */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; text-align:center;}
+  .stats .col{border:1px solid var(--line); padding:6px;}
+
+  /* ---------- FIGURE PLACEHOLDERS ---------- */
+  figure{margin:6px 0; border:2px dashed #999; background:#fafafa; padding:6px; text-align:center;}
+  figure .ph{font-size:11px; font-weight:bold; color:#666; padding:18px 4px; background:#eee; border:1px solid #ccc;}
+  figure.hero .ph{padding:60px 4px;}
+  figcaption{font-size:10px; color:var(--ink); margin-top:4px; text-align:left;}
+  figcaption b{display:block;}
+  ul{margin:4px 0 4px 16px; padding:0;}
+  li{margin:0 0 2px;}
+
+  /* mechanism boxes */
+  .mech{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .mech .col{border-left:5px solid var(--muted);}
+
+  /* embedding diagram box (methods visual) */
+  .diagram{border:1px solid var(--line); background:#fff; padding:8px; font-size:11px;}
+  .chain{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:4px;}
+  .node{border:1px solid var(--ink); padding:3px 6px; background:var(--box); font-weight:bold; font-size:11px;}
+  .arrow{font-size:14px; color:var(--muted);}
+  .leaf{border:1px solid var(--line); padding:2px 5px; font-size:10px; background:#fff;}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- =========================================================
+       HEADER: TITLE + HOOK + THESIS  (top of A1, read first)
+  ========================================================== -->
+  <header>
+    <p class="kicker">GIS &amp; food culture · NEIS school-lunch data · 2021–2025</p>
+    <h1>Does school lunch follow student food trends?</h1>
+    <p class="hook">Yes — but only what the FORM &middot; INSTITUTION &middot; BUDGET filter lets through.</p>
+    <div class="thesis">
+      <b>What lands on the tray is set by FORM &middot; INSTITUTION &middot; BUDGET — not taste,
+      not popularity, not “the big city.”</b><br>
+      Three common beliefs all fail.
+    </div>
+  </header>
+
+  <!-- =========================================================
+       DATA & METHOD  (minimal — big numbers + 1 diagram)
+  ========================================================== -->
+  <section>
+    <h2>Data &amp; Method</h2>
+
+    <div class="stats">
+      <div class="col"><span class="big-num">2,355<small>high schools (NEIS)</small></span></div>
+      <div class="col"><span class="big-num">~2.2M<small>lunches served</small></span></div>
+      <div class="col"><span class="big-num">2021–25<small>5 school years</small></span></div>
+      <div class="col"><span class="big-num">/1,000<small>freq = appearances per 1,000 meals</small></span></div>
+    </div>
+
+    <div class="row2" style="margin-top:8px;">
+      <div class="diagram">
+        <h3>Keyword extraction = FastText embedding, root-based expansion</h3>
+        <div class="chain">
+          <span class="node">root: “mala”</span>
+          <span class="arrow">&rarr;</span>
+          <span class="leaf">mala-tang</span>
+          <span class="leaf">mala-xiangguo</span>
+          <span class="leaf">mala-pork</span>
+          <span class="leaf">mala-soup</span>
+        </div>
+        <p class="small" style="margin-top:6px;">
+          One root auto-expands to all menu spellings that the embedding places nearby.
+          <b>7 trend roots:</b> mala, tanghulu, Dubai chocolate, yakgwa, Greek (yogurt),
+          dujjonku, butter-rice-cake. &nbsp;
+          <b>8 health roots:</b> vegan, vegetarian, plant-based, soy-meat, soy-bulgogi,
+          grain-bulgogi, tofu-cutlet, tofu-tender.
+        </p>
+      </div>
+      <div class="col">
+        <p class="small">
+          <b>Scope &amp; caveats (read first):</b><br>
+          &middot; Jeonbuk excluded — its lunch data begin only in 2024.<br>
+          &middot; “Frequency” is normalized per 1,000 meals, so big and small regions compare fairly.<br>
+          &middot; Trend = student-driven food fads; Health = vegan / plant-based items.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FINDINGS  (3 columns — the core)
+  ========================================================== -->
+  <section class="findings">
+    <h2>Three beliefs — and why each fails</h2>
+    <div class="row3">
+
+      <!-- FINDING 1 : FORM -->
+      <div class="col">
+        <p class="kicker">Finding 1 · FORM</p>
+        <h3>Popular ≠ on the tray. Can it become a <i>dish</i>?</h3>
+        <span class="big-num" style="color:var(--accent);">×6.9<small>mala growth, 2021→2025</small></span>
+        <ul>
+          <li>Mala becomes a <b>meal</b>: mala-pork, mala-soup.</li>
+          <li>Tanghulu &amp; Dubai chocolate barely appear — <b>snacks can’t be a meal.</b></li>
+          <li>Mala ≈ <b>80%</b> of the whole refined trend basket.</li>
+        </ul>
+        <figure>
+          <div class="ph">[PLOT: v1-mala-share — 100% stacked bar]</div>
+          <figcaption><b>Mala is ~80% of the trend basket.</b>
+          “Reflecting trends” really means “reflecting mala.”</figcaption>
+        </figure>
+        <p class="verdict">Belief “popular → on the tray” FAILS. What matters: can it be cooked as a dish?</p>
+      </div>
+
+      <!-- FINDING 2 : INSTITUTION -->
+      <div class="col">
+        <p class="kicker">Finding 2 · INSTITUTION</p>
+        <h3>The menu is a two-way mirror, not student demand</h3>
+        <span class="big-num" style="color:var(--accent);">2.9×<small>trend rises faster than health (×5.4 vs ×1.7)</small></span>
+        <ul>
+          <li>Both <b>stall after 2023.</b></li>
+          <li>Health / vegan is <b>not</b> student demand — adults (education offices) push it top-down.</li>
+          <li>Students push back via <b>food waste.</b></li>
+        </ul>
+        <figure>
+          <div class="ph">[PLOT: 07-compete — two trend lines]</div>
+          <figcaption><b>Trend food vs health food, 2021–2025.</b>
+          Trend climbs; health barely moves; both plateau after 2023.</figcaption>
+        </figure>
+        <p class="verdict">Belief “students drive the menu” FAILS — in both directions.</p>
+      </div>
+
+      <!-- FINDING 3 : BUDGET / SPACE  (GIS HERO) -->
+      <div class="col gis">
+        <p class="kicker">Finding 3 · SPACE &nbsp;<span style="color:#2c3e9e;">[GIS core]</span></p>
+        <h3>Not the metropolis — an eating-out geography</h3>
+        <span class="big-num" style="color:#2c3e9e;">I = +0.26<small>Moran’s I, mala · sigungu · p = 0.001</small></span>
+        <ul>
+          <li>Uptake is <b>not</b> led by Seoul/metro — in <b>90%</b> of bootstraps, metro &lt; non-metro.</li>
+          <li>LISA hotspots = <b>Busan &amp; Daegu</b> (big cities).</li>
+          <li><b>Not</b> the spicy-food culture space (r = −0.18): it’s an urban dining-out trend.</li>
+        </ul>
+        <figure class="hero">
+          <div class="ph">[PLOT: g1-mara-lisa — LISA cluster map of Korea]</div>
+          <figcaption><b>Where mala clusters: LISA hotspot map (sigungu).</b>
+          Red = High-High cluster. Hotspots in Busan &amp; Daegu, distinct from local spicy-food regions.</figcaption>
+        </figure>
+        <p class="verdict">Belief “the big city leads trends” FAILS — and uptake is clustered, not uniform.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SUPPORTING TIME-SERIES (full width)  — context for F1/F2
+  ========================================================== -->
+  <section>
+    <figure>
+      <div class="ph">[PLOT: 03-trend — slopegraph 2021→2025]</div>
+      <figcaption><b>Trend growth multipliers, 2021→2025 (log axis).</b>
+      Mala ×6.9 surges; snack-only trends (tanghulu, Dubai chocolate) stay near the floor.</figcaption>
+    </figure>
+  </section>
+
+  <!-- =========================================================
+       WHY  (Discussion — 3 mechanisms)
+  ========================================================== -->
+  <section>
+    <h2>Why? Three mechanisms behind the filter</h2>
+    <div class="mech">
+
+      <div class="col">
+        <h3>① Institutional filter</h3>
+        <ul>
+          <li>Nutrition standards forbid excess sugar/fat (별표3).</li>
+          <li>Monthly procurement <b>locked by the 27th.</b></li>
+          <li>High-calorie-low-nutrition rule screens out snack-type fads.</li>
+          <li><b>Result:</b> snacks filtered out; mala passes <i>as a dish.</i></li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h3>② Financial incentives <span class="small">(qualitative)</span></h3>
+        <ul>
+          <li>Eco-friendly extra support, e.g. Gyeongbuk <b>1,084</b> vs Seoul <b>0</b> KRW/meal.</li>
+          <li>May enable more menu experimentation in some provinces.</li>
+          <li><b>NOT causal:</b> Busan = 0 KRW yet a mala hotspot — a counterexample.</li>
+          <li><span class="small">Only 5 of 17 regions publish this data.</span></li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h3>③ Two-way mirror</h3>
+        <ul>
+          <li>Vegan day is top-down (Gwangju 2011, nation’s first).</li>
+          <li>Students reject it: waste <b>+30–40%</b>, <b>33%</b> dissatisfied.</li>
+          <li>Mandatory → optional retreat; forced-without-prep is rejected.</li>
+          <li>With prep, 6 Incheon schools reached <b>81%</b> approval.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       CONCLUSION  (banner)
+  ========================================================== -->
+  <section>
+    <div class="thesis" style="border-width:3px;">
+      <b>Conclusion.</b> School lunch <i>does</i> mirror student trends —
+      but only what the <b>FORM &middot; INSTITUTION</b> filter lets through,
+      and unevenly in space: mala <b>clusters in big cities</b>,
+      distinct from local food culture.
+    </div>
+  </section>
+
+  <!-- =========================================================
+       LIMITATIONS + SOURCES  (smallest, bottom)
+  ========================================================== -->
+  <section class="row2">
+    <div class="col">
+      <h3 class="kicker">Limitations</h3>
+      <ul class="small" style="margin-left:14px;">
+        <li>Basket is ~80% mala — closer to “mala adoption” than “trends” broadly.</li>
+        <li>Sido ranking is unstable; robust result is <b>metro insensitivity</b>, not a specific #1.</li>
+        <li>Health keywords are vegan-centric.</li>
+        <li>Budget data only 5/17 regions (qualitative, not causal).</li>
+        <li>Spatial clustering is driven by mala.</li>
+        <li>NEIS only from 2021 — no pre-trend baseline.</li>
+        <li>Regional trend↔health correlation NOT significant (r = −0.46, p = 0.07, Jeju-dependent).</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 class="kicker">Data &amp; sources</h3>
+      <p class="small">
+        NEIS school-lunch records (2,355 high schools, ~2.2M lunches, 2021–2025;
+        Jeonbuk excluded). Keyword extraction via FastText embedding (root-based expansion).
+        Spatial statistics: Moran’s I &amp; LISA at sigungu scale (PySAL).
+        Budget figures from 5 of 17 metropolitan/provincial education offices (public disclosures).
+      </p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
