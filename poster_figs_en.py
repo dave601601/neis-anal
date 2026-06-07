@@ -92,12 +92,17 @@ def fig_mara_share(m, fad_kw):
 # 2) competition ------------------------------------------------------------
 def fig_compete(m, fad_kw, heal_kw):
     fad = natrate(m, fad_kw); heal = natrate(m, heal_kw)
-    fig, ax = plt.subplots(figsize=(5.6, 4.0))
-    ax.plot(YEARS, fad.values, "-o", color=T, lw=3, ms=7, label="Trend food (mala, yakgwa)")
-    ax.plot(YEARS, heal.values, "-s", color=H, lw=3, ms=7, label="Health food (vegan, plant based)")
-    ax.set_xticks(YEARS); ax.set_xlabel("Year"); ax.set_ylabel("Appearances per 1,000 meals")
+    fig, ax = plt.subplots(figsize=(6.0, 4.0))
+    ax.plot(YEARS, fad.values, "-o", color=T, lw=3, ms=7)
+    ax.plot(YEARS, heal.values, "-s", color=H, lw=3, ms=7)
+    # label lines directly at their right end (no legend box to cover the curve)
+    ax.annotate("Trend food", (2025, fad[2025]), xytext=(7, 0), textcoords="offset points",
+                va="center", fontsize=16, color=T, fontweight="bold")
+    ax.annotate("Health food", (2025, heal[2025]), xytext=(7, 0), textcoords="offset points",
+                va="center", fontsize=16, color=H, fontweight="bold")
+    ax.set_xticks(YEARS); ax.set_xlim(2020.8, 2026.7); ax.set_ylim(bottom=0)
+    ax.set_xlabel("Year"); ax.set_ylabel("Appearances per 1,000 meals")
     ax.set_title("Trend food climbs, health stays flat", fontsize=17)
-    _legend(ax)
     for s in ["top", "right"]:
         ax.spines[s].set_visible(False)
     _save(fig, "en_compete.png")

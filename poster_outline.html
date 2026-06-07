@@ -7,7 +7,7 @@
   @page { size: A1; margin: 0; }
   :root{
     --ink:#1b1b1b; --muted:#555; --line:#cfcfcf; --box:#eef1f4;
-    --trend:#b5654a; --health:#2f6d74; --gis:#44476a; --paper:#fff;
+    --trend:#345b7a; --health:#345b7a; --gis:#345b7a; --paper:#fff;
   }
   *{box-sizing:border-box;}
   html,body{margin:0; background:#888;}
@@ -46,8 +46,10 @@
 
   /* method box: clearer embedding visual */
   .methodbox{border:2px solid var(--gis); padding:14pt 18pt;}
-  .methodbox h3{font-size:26pt; color:var(--gis);}
-  .methodbox p{font-size:20pt; margin:6pt 0;}
+  .methodbox h3{font-size:28pt; color:var(--gis);}
+  .methodbox p{font-size:22pt; margin:6pt 0;}
+  .ftline{font-size:23pt; margin:9pt 0;}
+  .ft{background:var(--gis); color:#fff; font-weight:bold; padding:3pt 13pt; border-radius:5pt; font-size:25pt;}
   .expand{display:flex; align-items:center; gap:12pt; flex-wrap:wrap; margin:8pt 0;
           background:var(--box); padding:9pt 14pt; border-radius:4pt;}
   .root{background:var(--gis); color:#fff; font-weight:bold; font-size:24pt; padding:8pt 16pt; border-radius:4pt;}
@@ -91,9 +93,9 @@
       <span class="small">Jeonbuk is left out because its data start only in 2024.</span></p>
 
     <div class="methodbox">
-      <h3>How do you find a trend food in two million menu lines?</h3>
-      <p>We did not pick keywords by hand. A FastText word embedding learns which menu names mean similar
-      things. It then grows each root word into every spelling that appears on real menus.</p>
+      <h3>How do we read 2 million menu lines?</h3>
+      <p class="ftline"><span class="ft">FastText</span> word embedding &middot; no hand-picked keywords
+      &middot; one root word finds every spelling</p>
       <div class="expand">
         <span class="root">mala</span>
         <span class="arrow">&rarr;</span>
