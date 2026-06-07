@@ -50,6 +50,10 @@
   .methodbox p{font-size:22pt; margin:6pt 0;}
   .ftline{font-size:23pt; margin:9pt 0;}
   .ft{background:var(--gis); color:#fff; font-weight:bold; padding:3pt 13pt; border-radius:5pt; font-size:25pt;}
+  .moranbox{border:1px solid var(--gis); background:var(--box); padding:8pt 11pt; margin:7pt 0; font-size:16.5pt; line-height:1.32;}
+  .formula{font-family:"DejaVu Serif",Georgia,serif; text-align:center; font-size:18pt; margin:8pt 0; color:#1b1b1b;}
+  .formula sub{font-size:12pt;}
+  .ovl{text-decoration:overline;}
   .expand{display:flex; align-items:center; gap:12pt; flex-wrap:wrap; margin:8pt 0;
           background:var(--box); padding:9pt 14pt; border-radius:4pt;}
   .root{background:var(--gis); color:#fff; font-weight:bold; font-size:24pt; padding:8pt 16pt; border-radius:4pt;}
@@ -152,9 +156,14 @@
         <h3>Not the big city. It follows an eating out map</h3>
         <span class="big-num" style="color:var(--gis)">I = 0.25<small>Moran's I for mala, p &lt; 0.001</small></span>
         <figure><img src="assets/en/en_mara_lisa.png"></figure>
-        <p>You would expect Seoul to pick up trends first, but it does not. Mala clusters in Busan and Daegu,
-        and a spatial test (Moran's I) shows this clustering is real, not random. It is also a different map
-        from Korea's rural spicy food regions. Mala follows an urban eating out geography, not local food culture.</p>
+        <div class="moranbox">
+          <b>Moran's I</b> asks: are neighbouring districts alike?
+          <div class="formula">I = (N / W) &middot; &Sigma; w<sub>ij</sub>(x<sub>i</sub>&minus;<span class="ovl">x</span>)(x<sub>j</sub>&minus;<span class="ovl">x</span>) / &Sigma;(x<sub>i</sub>&minus;<span class="ovl">x</span>)&sup2;</div>
+          I &gt; 0 means clustered, I near 0 means random. Mala gives <b>I = 0.25 (p &lt; 0.001)</b>: real clustering, not chance.
+        </div>
+        <p>Seoul does not lead. Mala clusters in Busan and Daegu. <b>Why there?</b> They are big cities with
+        the densest youth eating-out and delivery scene, where mala spread first, so school kitchens pick it
+        up fastest. It is not the rural spicy-food map.</p>
         <p class="verdict" style="color:var(--gis)">So the big city does not lead. Trend uptake clusters in
         particular cities.</p>
       </div>
