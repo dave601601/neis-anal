@@ -55,25 +55,25 @@ def _save(fig, name):
 def fig_mara_share(m, fad_kw):
     f25 = m[(m["y"] == 2025) & m["ddish_nm"].str.contains("|".join(map(re.escape, fad_kw)),
                                                           na=False, regex=True)]
-    roots = [("Mala", "마라"), ("Yakgwa", "약과"), ("Greek", "그릭"), ("Dubai", "두바이"),
+    roots = [("Mala", "마라"), ("Yakgwa", "약과"), ("Greek", "그릭"), ("Dubai choc.", "두바이"),
              ("Tanghulu", "탕후루"), ("Butter cake", "버터떡"), ("Dujjonku", "두쫀쿠")]
     tot = len(f25)
-    comp = [(en, f25["ddish_nm"].str.contains(ko, na=False, regex=False).sum()) for en, ko in roots]
-    comp = sorted([(en, c) for en, c in comp if c > 0], key=lambda x: -x[1])
-    fig, ax = plt.subplots(figsize=(5.6, 1.7)); fig.patch.set_facecolor(PAPER); ax.set_facecolor(PAPER)
-    left = 0
-    cmap = plt.cm.autumn(np.linspace(0, .85, len(comp)))
-    for col, (en, c) in zip(cmap, comp):
-        w = c / tot * 100
-        ax.barh(0, w, left=left, color=col, edgecolor=PAPER)
-        if w > 3:
-            ax.text(left + w / 2, 0, f"{en}\n{w:.0f}%", ha="center", va="center",
-                    fontsize=9, color=INK if en == "Mala" else "#fff")
-        left += w
-    ax.set_xlim(0, 100); ax.set_ylim(-.5, .5); ax.set_yticks([])
-    ax.set_xlabel("Share of 2025 trend basket (%)")
-    ax.set_title("Mala alone is ~80% of the trend basket", fontsize=12, color=INK)
-    for s in ["top", "right", "left"]:
+    comp = [(en, f25["ddish_nm"].str.contains(ko, na=False, regex=False).sum() / tot * 100)
+            for en, ko in roots]
+    comp = sorted([(en, v) for en, v in comp if v >= 0.5], key=lambda x: x[1])  # asc -> biggest on top
+    labels = [e for e, _ in comp]; vals = [v for _, v in comp]
+    palette = {"Mala": "#b6452c", "Yakgwa": "#2c6f7a", "Greek": "#3f7a4a", "Dubai choc.": "#9c6b30",
+               "Tanghulu": "#8a4a6f", "Butter cake": "#6f6657", "Dujjonku": "#a0894f"}
+    colors = [palette.get(e, "#999") for e in labels]
+    fig, ax = plt.subplots(figsize=(5.6, 3.0)); fig.patch.set_facecolor(PAPER); ax.set_facecolor(PAPER)
+    y = np.arange(len(labels))
+    ax.barh(y, vals, color=colors, edgecolor="white", height=.74)
+    for yi, v in zip(y, vals):
+        ax.text(v + 1.6, yi, f"{v:.0f}%", va="center", fontsize=15, color=INK)
+    ax.set_yticks(y); ax.set_yticklabels(labels, fontsize=15)
+    ax.set_xlim(0, 92); ax.set_xlabel("Share of the 2025 trend basket (%)", fontsize=12)
+    ax.set_title("Mala alone is about 80% of all trend food", fontsize=14, color=INK)
+    for s in ["top", "right"]:
         ax.spines[s].set_visible(False)
     fig.tight_layout(); _save(fig, "en_mara_share.png")
 
@@ -85,7 +85,7 @@ def fig_compete(m, fad_kw, heal_kw):
     ax.plot(YEARS, fad.values, "-o", color=FAD, lw=2.6, ms=6, label="Trend food (mala, yakgwa, ...)")
     ax.plot(YEARS, heal.values, "-o", color=HEAL, lw=2.6, ms=6, label="Health food (vegan, plant-based, ...)")
     ax.set_xticks(YEARS); ax.set_xlabel("Year"); ax.set_ylabel("Appearances per 1,000 meals")
-    ax.set_title("Trend food vs health food, 2021–2025", fontsize=13, color=INK)
+    ax.set_title("Trend food vs health food, 2021 to 2025", fontsize=13, color=INK)
     ax.legend(fontsize=10, frameon=False, loc="upper left")
     for s in ["top", "right"]:
         ax.spines[s].set_visible(False)
@@ -112,7 +112,7 @@ def fig_trend(m):
                     va="center", ha="right", fontsize=9, color="#6f6657")
     ax.set_yscale("log"); ax.set_xlim(-.3, 1.9); ax.set_xticks([0, 1])
     ax.set_xticklabels(["2021", "2025"], fontsize=12); ax.set_ylabel("Per 1,000 meals (log)")
-    ax.set_title("School-lunch trends: 2021->2025 multiplier", fontsize=13, color=INK)
+    ax.set_title("How school lunch trends grew, 2021 to 2025", fontsize=13, color=INK)
     for s in ["top", "right"]:
         ax.spines[s].set_visible(False)
     fig.tight_layout(); _save(fig, "en_trend.png")
@@ -131,7 +131,7 @@ def fig_lisa():
     gall.plot(ax=ax, color="#efe8d8", edgecolor="#d8cdb8", linewidth=0.25)
     g.plot(ax=ax, color=[Q_COLOR[c] for c in cat], edgecolor="#b8ab92", linewidth=0.25)
     prov.boundary.plot(ax=ax, color="#6f6657", linewidth=0.9)
-    ax.set_title(f"Where mala clusters — LISA (Moran's I = {mi.I:.2f}, p = {mi.p_sim:.3f})",
+    ax.set_title(f"Mala clusters (LISA): Moran's I = {mi.I:.2f}, p = {mi.p_sim:.3f}",
                  fontsize=13, color=INK); ax.axis("off")
     keys = [k for k in lab if k in set(cat)]
     handles = [plt.Rectangle((0, 0), 1, 1, fc=Q_COLOR[k], ec="#9a8f78") for k in keys]
