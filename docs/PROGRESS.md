@@ -10,19 +10,21 @@
 - [METHODS.md](../METHODS.md) — 프로세스 4종(공간자기상관·동질화 robust·날씨통제·트렌드 민감도), 과정 그림.
 - [TRENDS.md](../TRENDS.md) — **트렌드 종합 보고서**(질문·방법·발견3·역학·검증). 데이터 재현·부트스트랩(`verify_trends.py`)·외부출처 적대감사 통과.
 - [DYNAMICS.md](../DYNAMICS.md) — **왜 그런가(역학)**. 패턴①②③의 원인을 급식 제도·정책·세대로 추적(외부 다중출처·근거강도 표기).
+- [poster_outline.html](../poster_outline.html) — **트렌드 발표 영어 A1 포스터**(3단, FastText·LISA·Moran's I 공식). 그림 `poster_figs_en.py`→`assets/en/`, 변환 `md_to_pdf.py`.
 - [PRESENTATION_RANKING.md](PRESENTATION_RANKING.md) — 발견 발표 적합성 순위.
 
 ## 주제 로그
 - [pipeline](progress/pipeline.md) — 수집·속성·임베딩 (dotenv·병렬화·전체수집·64G캡)
 - [spatial-analysis](progress/spatial-analysis.md) — 공간 자기상관 (Moran's I·LISA), 시도·시군구
-- [poster](progress/poster.md) — A1 HTML 포스터
+- [poster](progress/poster.md) — A1 발표 포스터 (영어 트렌드 + 한글 공간)
 - [temporal-analysis](progress/temporal-analysis.md) — 계절·트렌드·트렌드민감도·유행반영
 - [hypothesis-tests](progress/hypothesis-tests.md) — 동질화·날씨·확산·회피규칙 (검증 완료)
 - [why-dynamics](progress/why-dynamics.md) — '왜 그런가' 외부 리서치(제도·정책·세대), DYNAMICS.md
 
 ## Open (현재 미결 / 다음 할 일)
-- [ ] 최종 발표 방향·포스터 확정(공간 vs 시간 vs 결합). `poster.html` 은 시도(17) 데이터 하드코딩 상태.
+- [ ] **포스터 팀명/멤버 placeholder를 실제 이름으로** (poster_outline.html 헤더).
 - [ ] (선택) DYNAMICS ③(전통 후퇴·마라=영남) 적대검증 — ①②④는 트렌드 종합검증서 감사 완료.
+- [x] **트렌드 발표 영어 A1 포스터 완성** → [poster_outline.html](../poster_outline.html) (3단·1페이지, 그림 `poster_figs_en.py`→assets/en/ 5장, Moran's I 공식·핫스팟 이유 포함). 공대생 청중 평이체.
 - [x] **트렌드 종합검증 + TRENDS.md 통합 완료** → 데이터 재현·부트스트랩(`verify_trends.py`)·외부 적대감사.
   교정: 89%→90%, '대구 1위 53%'→광주 33%(stale), 정체 '48→50'→유행28→30·건강11.8→10.3. → [TRENDS.md](../TRENDS.md).
 - [x] **"Why / main dynamics" 리서치 완료** → [DYNAMICS.md](../DYNAMICS.md). 3패턴을 제도 필터①·재정
