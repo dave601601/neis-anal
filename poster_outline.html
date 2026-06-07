@@ -56,7 +56,7 @@
   .stats .col{border:1px solid var(--line); padding:6px;}
 
   /* ---------- FIGURE PLACEHOLDERS ---------- */
-  figure{margin:6px 0; border:2px dashed #999; background:#fafafa; padding:6px; text-align:center;}
+  figure{margin:6px 0; border:1px solid #e2e2e2; background:#fff; padding:4px; text-align:center;}
   figure .ph{font-size:11px; font-weight:bold; color:#666; padding:18px 4px; background:#eee; border:1px solid #ccc;}
   figure.hero .ph{padding:60px 4px;}
   figcaption{font-size:10px; color:var(--ink); margin-top:4px; text-align:left;}
@@ -155,7 +155,7 @@
           <li>Mala ≈ <b>80%</b> of the whole refined trend basket.</li>
         </ul>
         <figure>
-          <div class="ph">[PLOT: v1-mala-share — 100% stacked bar]</div>
+          <img src="assets/en/en_mara_share.png" style="width:100%;display:block;">
           <figcaption><b>Mala is ~80% of the trend basket.</b>
           “Reflecting trends” really means “reflecting mala.”</figcaption>
         </figure>
@@ -166,14 +166,14 @@
       <div class="col">
         <p class="kicker">Finding 2 · INSTITUTION</p>
         <h3>The menu is a two-way mirror, not student demand</h3>
-        <span class="big-num" style="color:var(--accent);">2.9×<small>trend rises faster than health (×5.4 vs ×1.7)</small></span>
+        <span class="big-num" style="color:var(--accent);">2.9×<small>trend food vs health food (2025)</small></span>
         <ul>
           <li>Both <b>stall after 2023.</b></li>
           <li>Health / vegan is <b>not</b> student demand — adults (education offices) push it top-down.</li>
           <li>Students push back via <b>food waste.</b></li>
         </ul>
         <figure>
-          <div class="ph">[PLOT: 07-compete — two trend lines]</div>
+          <img src="assets/en/en_compete.png" style="width:100%;display:block;">
           <figcaption><b>Trend food vs health food, 2021–2025.</b>
           Trend climbs; health barely moves; both plateau after 2023.</figcaption>
         </figure>
@@ -184,14 +184,14 @@
       <div class="col gis">
         <p class="kicker">Finding 3 · SPACE &nbsp;<span style="color:#2c3e9e;">[GIS core]</span></p>
         <h3>Not the metropolis — an eating-out geography</h3>
-        <span class="big-num" style="color:#2c3e9e;">I = +0.26<small>Moran’s I, mala · sigungu · p = 0.001</small></span>
+        <span class="big-num" style="color:#2c3e9e;">I = 0.25<small>Moran’s I (mala, sigungu) · p &lt; 0.001</small></span>
         <ul>
-          <li>Uptake is <b>not</b> led by Seoul/metro — in <b>90%</b> of bootstraps, metro &lt; non-metro.</li>
-          <li>LISA hotspots = <b>Busan &amp; Daegu</b> (big cities).</li>
-          <li><b>Not</b> the spicy-food culture space (r = −0.18): it’s an urban dining-out trend.</li>
+          <li><b>Not</b> led by Seoul or the metropolis.</li>
+          <li>Hotspots = <b>Busan &amp; Daegu</b> (big cities).</li>
+          <li>Distinct from the local <b>spicy-food culture</b> — an urban dining-out trend.</li>
         </ul>
         <figure class="hero">
-          <div class="ph">[PLOT: g1-mara-lisa — LISA cluster map of Korea]</div>
+          <img src="assets/en/en_mara_lisa.png" style="width:100%;display:block;">
           <figcaption><b>Where mala clusters: LISA hotspot map (sigungu).</b>
           Red = High-High cluster. Hotspots in Busan &amp; Daegu, distinct from local spicy-food regions.</figcaption>
         </figure>
@@ -206,7 +206,7 @@
   ========================================================== -->
   <section>
     <figure>
-      <div class="ph">[PLOT: 03-trend — slopegraph 2021→2025]</div>
+      <img src="assets/en/en_trend.png" style="width:54%;display:block;margin:0 auto;">
       <figcaption><b>Trend growth multipliers, 2021→2025 (log axis).</b>
       Mala ×6.9 surges; snack-only trends (tanghulu, Dubai chocolate) stay near the floor.</figcaption>
     </figure>
@@ -243,9 +243,8 @@
         <h3>③ Two-way mirror</h3>
         <ul>
           <li>Vegan day is top-down (Gwangju 2011, nation’s first).</li>
-          <li>Students reject it: waste <b>+30–40%</b>, <b>33%</b> dissatisfied.</li>
-          <li>Mandatory → optional retreat; forced-without-prep is rejected.</li>
-          <li>With prep, 6 Incheon schools reached <b>81%</b> approval.</li>
+          <li>Students reject it via <b>food waste</b> → many regions retreated to <i>optional</i>.</li>
+          <li>But with prep &amp; education, approval rebounds (Incheon pilots <b>81%</b>).</li>
         </ul>
       </div>
 
@@ -271,14 +270,11 @@
     <div class="col">
       <h3 class="kicker">Limitations</h3>
       <ul class="small" style="margin-left:14px;">
-        <li>Basket is ~80% mala — closer to “mala adoption” than “trends” broadly.</li>
-        <li>Sido ranking is unstable; robust result is <b>metro insensitivity</b>, not a specific #1.</li>
-        <li>Health keywords are vegan-centric.</li>
-        <li>Budget data only 5/17 regions (qualitative, not causal).</li>
-        <li>Spatial clustering is driven by mala.</li>
-        <li>NEIS only from 2021 — no pre-trend baseline.</li>
-        <li>Regional trend↔health correlation NOT significant (r = −0.46, p = 0.07, Jeju-dependent).</li>
+        <li>Trend basket is ~80% mala — read as “mala adoption.”</li>
+        <li>Budget link is qualitative (5/17 regions), not causal.</li>
+        <li>NEIS from 2021 — no pre-trend baseline.</li>
       </ul>
+      <p class="small"><b>Full statistics &amp; limitations are in the paper.</b></p>
     </div>
     <div class="col">
       <h3 class="kicker">Data &amp; sources</h3>
